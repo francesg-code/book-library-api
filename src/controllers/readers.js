@@ -15,9 +15,19 @@ const list = (req, res) => {
      } else {
      res.status(200).json([numOfRowsUpdated]);
      }
+});
+};
+
+ const deleteReader = (req, res) => {
+ const { id } = req.params;
+ Reader.destroy({ where: { id } }).then((numOfRowsDeleted) => {
+     if (numOfRowsDeleted === 0) {
+     res.status(404).json({ error: "The reader does not exist." });
+     } else {
+     res.status(204).json(numOfRowsDeleted);
+     }
  });
  };
 
-
-module.exports = { create, list, update };
+module.exports = { create, list, update, deleteReader };
 
