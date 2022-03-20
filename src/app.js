@@ -7,5 +7,7 @@ app.use(express.json());
 
 app.post("/readers", readerControllers.create);
 
+app.get("/readers", readerControllers.list);
+
 
 module.exports = app;

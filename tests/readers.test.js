@@ -38,6 +38,37 @@ describe("POST /readers", async () => {
   });
 });
 
+describe("with readers in the database", () => {
+  let readers;
+  beforeEach((done) => {
+    Promise.all([
+      Reader.create({ name: "Mia Corvere", email: "mia@redchurch.com" }),
+      Reader.create({ name: "Bilbo Baggins", email: "bilbo@bagend.com" }),
+      Reader.create({ name: "Rand al'Thor", email: "rand@tworivers.com" }),
+    ]).then((documents) => {
+      readers = documents;
+      done();
+    });
+  });
+
+  describe("GET /readers", () => {
+    it("gets all reader records", (done) => {
+      request(app)
+        .get("/readers")
+        .then((res) => {
+          expect(res.status).to.equal(200);
+          expect(res.body.length).to.equal(3);
+          res.body.forEach((reader) => {
+            const expected = readers.find((a) => a.id === reader.id);
+            expect(reader.name).to.equal(expected.name);
+            expect(reader.email).to.equal(expected.email);
+          });
+          done();
+        })
+        .catch((error) => done(error));
+    });
+  });
+});
 });
 
 
