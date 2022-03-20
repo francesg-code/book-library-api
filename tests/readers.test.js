@@ -68,6 +68,51 @@ describe("with readers in the database", () => {
         .catch((error) => done(error));
     });
   });
+
+
+  describe("PATCH /readers/:id", () => {
+   it("updates reader name by id", (done) => {
+     const reader = readers[0];
+     request(app)
+     .patch(`/readers/${reader.id}`)
+     .send({ name: "Lyra Silvertongue" })
+     .then((res) => {
+         expect(res.status).to.equal(200);
+         Reader.findByPk(reader.id, { raw: true }).then((updatedReader) => {
+         expect(updatedReader.name).to.equal("Lyra Silvertongue");
+         done();
+         });
+     })
+     .catch((error) => done(error));
+ });
+
+  it("updates reader email by id", (done) => {
+     const reader = readers[0];
+     request(app)
+     .patch(`/readers/${reader.id}`)
+     .send({ email: "lyra@jordancollege.ac.uk" })
+     .then((res) => {
+         expect(res.status).to.equal(200);
+         Reader.findByPk(reader.id, { raw: true }).then((updatedReader) => {
+         expect(updatedReader.email).to.equal("lyra@jordancollege.ac.uk");
+         done();
+         });
+     });
+ });
+
+ it("returns a 404 if the reader does not exist", (done) => {
+     request(app)
+     .patch("/readers/345")
+     .send({ name: "Harry Potter" })
+     .then((res) => {
+         expect(res.status).to.equal(404);
+         expect(res.body.error).to.equal("The reader does not exist.");
+         done();
+     })
+     .catch((error) => done(error));
+ });
+ });
+
 });
 });
 

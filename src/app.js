@@ -9,5 +9,8 @@ app.post("/readers", readerControllers.create);
 
 app.get("/readers", readerControllers.list);
 
+app.patch("/readers/:id", readerControllers.update);
+
+
 
 module.exports = app;

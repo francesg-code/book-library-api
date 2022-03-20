@@ -7,5 +7,17 @@ const list = (req, res) => {
   Reader.findAll().then((readers) => res.status(200).json(readers));
 };
 
-module.exports = { create, list };
+ const update = (req, res) => {
+ const { id } = req.params;
+ Reader.update(req.body, { where: { id } }).then(([numOfRowsUpdated]) => {
+     if (numOfRowsUpdated === 0) {
+     res.status(404).json({ error: "The reader does not exist." });
+     } else {
+     res.status(200).json([numOfRowsUpdated]);
+     }
+ });
+ };
+
+
+module.exports = { create, list, update };
 
