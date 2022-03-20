@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha tests/**/*.js --exit --recursive --timeout 30000 --file ./tests/test-setup.js",
     "start": "nodemon -r dotenv/config index.js",
-    "prestart": "node scripts/create-database.js"
+    "pretest": "node scripts/create-database.js test",
+    "posttest": "node scripts/drop-database.js"
   },
   "author": "",
   "license": "ISC",
@@ -16,9 +17,12 @@
     "sequelize": "^6.17.0"
   },
   "devDependencies": {
+    "chai": "^4.3.6",
     "dotenv": "^16.0.0",
     "i": "^0.3.7",
+    "mocha": "^9.2.2",
     "nodemon": "^2.0.15",
-    "npm": "^8.5.5"
+    "npm": "^8.5.5",
+    "supertest": "^6.2.2"
   }
 }
